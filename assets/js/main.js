@@ -1,245 +1,176 @@
-/**
- * Template Name: Laura
- * Template URL: https://bootstrapmade.com/laura-free-creative-bootstrap-theme/
- * Updated: Aug 07 2024 with Bootstrap v5.3.3
- * Author: BootstrapMade.com
- * License: https://bootstrapmade.com/license/
- */
-
 (function () {
   "use strict";
 
-  /**
-   * Apply .scrolled class to the body as the page is scrolled down
-   */
+  // SCROLLED CLASS ON BODY
   function toggleScrolled() {
-    const selectBody = document.querySelector("body");
-    const selectHeader = document.querySelector("#header");
+    const body = document.querySelector("body");
+    const header = document.querySelector("#header");
     if (
-      !selectHeader.classList.contains("scroll-up-sticky") &&
-      !selectHeader.classList.contains("sticky-top") &&
-      !selectHeader.classList.contains("fixed-top")
+      !header.classList.contains("scroll-up-sticky") &&
+      !header.classList.contains("sticky-top") &&
+      !header.classList.contains("fixed-top")
     )
       return;
     window.scrollY > 100
-      ? selectBody.classList.add("scrolled")
-      : selectBody.classList.remove("scrolled");
+      ? body.classList.add("scrolled")
+      : body.classList.remove("scrolled");
   }
 
   document.addEventListener("scroll", toggleScrolled);
-  window.addEventListener("load", toggleScrolled);
+  document.addEventListener("DOMContentLoaded", toggleScrolled);
 
-  // Scroll top by clicking the logo
-  document.querySelector(".logo").addEventListener("click", function (event) {
-    event.preventDefault();
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
+  // LOGO SCROLL TO TOP
+  document.addEventListener("DOMContentLoaded", () => {
+    const logo = document.querySelector(".logo");
+    if (logo) {
+      logo.addEventListener("click", (e) => {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    }
+  });
+
+  // MOBILE NAV TOGGLE
+  document.addEventListener("DOMContentLoaded", () => {
+    const toggleBtn = document.querySelector(".mobile-nav-toggle");
+    if (toggleBtn) {
+      toggleBtn.addEventListener("click", () => {
+        document.body.classList.toggle("mobile-nav-active");
+        toggleBtn.classList.toggle("bi-list");
+        toggleBtn.classList.toggle("bi-x");
+      });
+    }
+
+    // DROPDOWNS
+    document.querySelectorAll(".navmenu .toggle-dropdown").forEach((item) => {
+      item.addEventListener("click", (e) => {
+        e.preventDefault();
+        item.parentNode.classList.toggle("active");
+        item.parentNode.nextElementSibling.classList.toggle("dropdown-active");
+        e.stopImmediatePropagation();
+      });
     });
   });
 
-  /**
-   * Mobile nav toggle
-   */
-  const mobileNavToggleBtn = document.querySelector(".mobile-nav-toggle");
+  // TYPING EFFECT
+  document.addEventListener("DOMContentLoaded", () => {
+    const targets = [
+      ".about-me .typed",
+      ".homeload .typed",
+      ".nickname .typed",
+      ".position-absolute .typed",
+    ];
 
-  function mobileNavToogle() {
-    document.querySelector("body").classList.toggle("mobile-nav-active");
-    mobileNavToggleBtn.classList.toggle("bi-list");
-    mobileNavToggleBtn.classList.toggle("bi-x");
-  }
-  mobileNavToggleBtn.addEventListener("click", mobileNavToogle);
-
-  /**
-   * Hide mobile nav on same-page/hash links
-   */
-
-  /**
-   * Toggle mobile nav dropdowns
-   */
-  document.querySelectorAll(".navmenu .toggle-dropdown").forEach((navmenu) => {
-    navmenu.addEventListener("click", function (e) {
-      e.preventDefault();
-      this.parentNode.classList.toggle("active");
-      this.parentNode.nextElementSibling.classList.toggle("dropdown-active");
-      e.stopImmediatePropagation();
+    targets.forEach((selector) => {
+      const el = document.querySelector(selector);
+      if (el) {
+        let strings = el.getAttribute("data-typed-items").split(",");
+        new Typed(selector, typedConfig(strings, false));
+      }
     });
   });
 
-  document.addEventListener("DOMContentLoaded", function () {
-    const about_typed = document.querySelector(".about-me .typed");
-    if (about_typed) {
-      let typed_strings = about_typed.getAttribute("data-typed-items");
-      typed_strings = typed_strings.split(",");
-      new Typed(
-        ".about-me .typed ,.nickname",
-        typedConfig(typed_strings, false)
-      ); // Disable cursor
-    }
-
-    const home_typed = document.querySelector(".homeload .typed");
-    if (home_typed) {
-      let typed_strings = home_typed.getAttribute("data-typed-items");
-      typed_strings = typed_strings.split(",");
-      new Typed(".homeload .typed", typedConfig(typed_strings, false)); // Disable cursor
-    }
-
-    const nickname_typed = document.querySelector(".nickname .typed");
-    if (nickname_typed) {
-      let typed_strings = nickname_typed.getAttribute("data-typed-items");
-      typed_strings = typed_strings.split(",");
-      new Typed(".nickname .typed", typedConfig(typed_strings, false)); // Disable cursor
-    }
-
-    // Add the new code here for the name typing effect
-    const name_typed = document.querySelector(".position-absolute .typed");
-    if (name_typed) {
-      let typed_strings = name_typed.getAttribute("data-typed-items");
-      typed_strings = typed_strings.split(",");
-      new Typed(".position-absolute .typed", typedConfig(typed_strings, false)); // Disable cursor
-    }
-  });
-
-  function typedConfig(typed_strings, showCursor = true) {
+  function typedConfig(strings, showCursor = true) {
     return {
-      strings: typed_strings,
+      strings,
       loop: true,
       typeSpeed: 100,
       backSpeed: 50,
       backDelay: 2000,
-      cursorChar: showCursor ? "|" : "", // Remove cursor if showCursor is false
+      cursorChar: showCursor ? "|" : "",
     };
   }
 
-  /**
-   * Preloader
-   */
-  const preloader = document.querySelector("#preloader");
-
-  if (preloader) {
-    // Add a delay of 3 seconds (3000ms) before removing the preloader
-    window.addEventListener("load", () => {
-      setTimeout(() => {
-        preloader.remove(); // Remove the preloader after the delay
-      }, 1000); // Adjust the delay time here (in milliseconds)
-    });
-  }
-
-  /**
-   * Scroll top button
-   */
-  let scrollTop = document.querySelector(".scroll-top");
-
-  function toggleScrollTop() {
-    if (scrollTop) {
-      window.scrollY > 100
-        ? scrollTop.classList.add("active")
-        : scrollTop.classList.remove("active");
+  // 🔥 FASTER PRELOADER REMOVAL (no 1s delay, fires on DOMContentLoaded)
+  document.addEventListener("DOMContentLoaded", () => {
+    const preloader = document.querySelector("#preloader");
+    if (preloader) {
+      preloader.remove();
     }
-  }
-  scrollTop.addEventListener("click", (e) => {
-    e.preventDefault();
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
   });
 
-  window.addEventListener("load", toggleScrollTop);
-  document.addEventListener("scroll", toggleScrollTop);
+  // SCROLL TO TOP BUTTON
+  document.addEventListener("DOMContentLoaded", () => {
+    const scrollTop = document.querySelector(".scroll-top");
+    if (scrollTop) {
+      const toggleScrollTop = () => {
+        window.scrollY > 100
+          ? scrollTop.classList.add("active")
+          : scrollTop.classList.remove("active");
+      };
 
-  /**
-   * Animation on scroll function and init
-   */
-  function aosInit() {
-    AOS.init({
-      duration: 600,
-      easing: "ease-in-out",
-      once: false,
-    });
-  }
-  window.addEventListener("load", aosInit);
+      scrollTop.addEventListener("click", (e) => {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
 
-  /**
-   * Init swiper sliders
-   */
-  function initSwiper() {
-    document.querySelectorAll(".init-swiper").forEach(function (swiperElement) {
-      let config = JSON.parse(
+      toggleScrollTop();
+      document.addEventListener("scroll", toggleScrollTop);
+    }
+  });
+
+  // ANIMATIONS ON SCROLL (deferred to full load)
+  window.addEventListener("load", () => {
+    AOS.init({ duration: 600, easing: "ease-in-out", once: false });
+  });
+
+  // SWIPER SLIDERS
+  window.addEventListener("load", () => {
+    document.querySelectorAll(".init-swiper").forEach((swiperElement) => {
+      const config = JSON.parse(
         swiperElement.querySelector(".swiper-config").innerHTML.trim()
       );
-
-      if (swiperElement.classList.contains("swiper-tab")) {
-        initSwiperWithCustomPagination(swiperElement, config);
-      } else {
-        new Swiper(swiperElement, config);
-      }
+      swiperElement.classList.contains("swiper-tab")
+        ? initSwiperWithCustomPagination(swiperElement, config)
+        : new Swiper(swiperElement, config);
     });
-  }
-
-  window.addEventListener("load", initSwiper);
-
-  /**
-   * Initiate glightbox
-   */
-  const glightbox = GLightbox({
-    selector: ".glightbox",
   });
 
-  /**
-   * Init isotope layout and filters
-   */
-  document.querySelectorAll(".isotope-layout").forEach(function (isotopeItem) {
-    let layout = isotopeItem.getAttribute("data-layout") ?? "masonry";
-    let filter = isotopeItem.getAttribute("data-default-filter") ?? "*";
-    let sort = isotopeItem.getAttribute("data-sort") ?? "original-order";
+  // GLIGHTBOX
+  window.addEventListener("load", () => {
+    GLightbox({ selector: ".glightbox" });
+  });
 
-    let initIsotope;
-    imagesLoaded(isotopeItem.querySelector(".isotope-container"), function () {
-      initIsotope = new Isotope(
-        isotopeItem.querySelector(".isotope-container"),
-        {
+  // ISOTOPE FILTERS
+  window.addEventListener("load", () => {
+    document.querySelectorAll(".isotope-layout").forEach((item) => {
+      const layout = item.getAttribute("data-layout") || "masonry";
+      const filter = item.getAttribute("data-default-filter") || "*";
+      const sort = item.getAttribute("data-sort") || "original-order";
+
+      imagesLoaded(item.querySelector(".isotope-container"), () => {
+        const iso = new Isotope(item.querySelector(".isotope-container"), {
           itemSelector: ".isotope-item",
           layoutMode: layout,
-          filter: filter,
+          filter,
           sortBy: sort,
-        }
-      );
-    });
+        });
 
-    isotopeItem
-      .querySelectorAll(".isotope-filters li")
-      .forEach(function (filters) {
-        filters.addEventListener(
-          "click",
-          function () {
-            isotopeItem
-              .querySelector(".isotope-filters .filter-active")
-              .classList.remove("filter-active");
-            this.classList.add("filter-active");
-            initIsotope.arrange({
-              filter: this.getAttribute("data-filter"),
-            });
-            if (typeof aosInit === "function") {
-              aosInit();
-            }
-          },
-          false
-        );
+        item.querySelectorAll(".isotope-filters li").forEach((filterBtn) => {
+          filterBtn.addEventListener("click", () => {
+            item
+              .querySelector(".filter-active")
+              ?.classList.remove("filter-active");
+            filterBtn.classList.add("filter-active");
+            iso.arrange({ filter: filterBtn.getAttribute("data-filter") });
+            AOS.init();
+          });
+        });
       });
+    });
   });
 
-  /**
-   * Correct scrolling position upon page load for URLs containing hash links.
-   */
-  window.addEventListener("load", function (e) {
+  // CORRECT SCROLL POSITION ON HASH LINKS
+  window.addEventListener("load", () => {
     if (window.location.hash) {
-      if (document.querySelector(window.location.hash)) {
+      const target = document.querySelector(window.location.hash);
+      if (target) {
         setTimeout(() => {
-          let section = document.querySelector(window.location.hash);
-          let scrollMarginTop = getComputedStyle(section).scrollMarginTop;
+          const offset = parseInt(
+            getComputedStyle(target).scrollMarginTop || "0"
+          );
           window.scrollTo({
-            top: section.offsetTop - parseInt(scrollMarginTop),
+            top: target.offsetTop - offset,
             behavior: "smooth",
           });
         }, 100);
@@ -247,30 +178,28 @@
     }
   });
 
-  /**
-   * Navmenu Scrollspy
-   */
-  let navmenulinks = document.querySelectorAll(".navmenu a");
-
-  function navmenuScrollspy() {
-    navmenulinks.forEach((navmenulink) => {
-      if (!navmenulink.hash) return;
-      let section = document.querySelector(navmenulink.hash);
+  // NAVMENU SCROLLSPY
+  const navLinks = document.querySelectorAll(".navmenu a");
+  function updateActiveNav() {
+    navLinks.forEach((link) => {
+      if (!link.hash) return;
+      const section = document.querySelector(link.hash);
       if (!section) return;
-      let position = window.scrollY + 200;
+      const position = window.scrollY + 200;
       if (
         position >= section.offsetTop &&
         position <= section.offsetTop + section.offsetHeight
       ) {
         document
           .querySelectorAll(".navmenu a.active")
-          .forEach((link) => link.classList.remove("active"));
-        navmenulink.classList.add("active");
+          .forEach((el) => el.classList.remove("active"));
+        link.classList.add("active");
       } else {
-        navmenulink.classList.remove("active");
+        link.classList.remove("active");
       }
     });
   }
-  window.addEventListener("load", navmenuScrollspy);
-  document.addEventListener("scroll", navmenuScrollspy);
+
+  window.addEventListener("load", updateActiveNav);
+  document.addEventListener("scroll", updateActiveNav);
 })();
