@@ -26,11 +26,10 @@
       </div>
       <div class="container">
         <div class="copyright">
-          <span>Copyright</span> <strong class="px-1 sitename">Laura</strong>
           <span>All Rights Reserved</span>
         </div>
         <div class="credits">
-          Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+          Designed by <a href="https://bootstrapmade.com/">Brian Inguito</a>
         </div>
       </div>
     </div>

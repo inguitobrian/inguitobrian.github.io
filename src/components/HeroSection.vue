@@ -138,3 +138,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.btn-outline-dark.btn-custom:hover {
+  background-color: white;
+  color: black;
+  border-color: white;
+}
+</style>

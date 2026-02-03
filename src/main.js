@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
 import App from "./App.vue";
 import Home from "./views/Home.vue";
+import PortfolioPage from "./views/PortfolioPage.vue";
 import PortfolioDetails from "./views/PortfolioDetails.vue";
 
 const routes = [
@@ -9,6 +10,11 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
+  },
+  {
+    path: "/portfolio",
+    name: "Portfolio",
+    component: PortfolioPage,
   },
   {
     path: "/portfolio-details",
